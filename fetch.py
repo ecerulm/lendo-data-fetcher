@@ -8,7 +8,6 @@ with open("logging.yaml", "rt") as f:
 	logging.config.dictConfig(yaml.safe_load(f.read()))
 
 logger = logging.getLogger("lendo-fetcher")
-logger.info("test")
 
 BASE_URL = "https://sample-database-1008463684624.europe-north1.run.app"
 
@@ -26,7 +25,15 @@ def main():
         "dateTo": DATE_TO,
     }
 
-    r = requests.get(f"{BASE_URL}/applications", params)
+
+
+    for ep in endpoints:
+        url = f"{BASE_URL}/{ep}"
+        r = requests.get(f"{BASE_URL}/applications", params)
+        logger.info("Fetched %s", url)
+        result = r.json()
+        logger.info("Number of results: %s", len(result))
+        # print(r.json())
 
 
 if __name__ == "__main__":
